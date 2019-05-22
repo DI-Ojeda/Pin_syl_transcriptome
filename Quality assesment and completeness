@@ -1,0 +1,55 @@
+1. Quality of the assembled transcriptome
+
+a) Trinity stats
+Run the following command in the utilities folder of Trinity:
+
+perl TrinityStats.pl  Trinity.fasta
+
+This will give you the N50, percentage GC content, total assembled bases, and total Trinity transcripts and “genes”.
+
+b) Transrate
+Transrate is software for de-novo transcriptome assembly quality analysis. 
+
+perl transrate --assembly <Transcriptome in fasta file> --output <output_directory>
+
+c) rnaQuast
+rnaQUAST is a tool for evaluating RNA-Seq assemblies using reference genome and gene database.
+
+python rnaQUAST.py --transcripts /PATH/TO/transcripts1.fasta \
+/PATH/TO/ANOTHER/transcripts2.fasta [...] \
+ --reference /PATH/TO/reference.fasta --gtf /PATH/TO/gene_coordinates.gtf
+
+The program will generate a folder with the results in the rnaQuast folder.
+
+d) DETONATE (DE novo TranscriptOme rNa-seq Assembly with or without the Truth Evaluation) consists of two component packages, 
+RSEM-EVAL and REF-EVAL. Both packages are mainly intended to be used to evaluate de novo transcriptome assemblies, 
+although REF-EVAL can be used to compare sets of any kinds of genomic sequences.
+
+Run RSEM-EVAL on each assembly
+rsem-eval-calculate-score --paired-end _R1.fastq _R2.fastq /path/to/transcripome/Trinity.fasta \
+rsem_eval_output 150 -p 4
+
+2. Completeness of assembled transcriptome
+
+BUSCO
+BUSCO provides measures for quantitative assessment of genome assembly, gene set, and transcriptome completeness based on evolutionarily 
+informed expectations of gene content from near-universal single-copy orthologs selected from OrthoDB.
+Input data. Transcriptome file in fasta format and the data base used (e.g. embryophyta_odb9)
+
+- download the embryophyta_odb9 database
+- runt he following script:
+
+python BUSCO.py -i SEQUENCE_FILE -o OUTPUT_NAME -l LINEAGE -m tran
+
+SEQUENCE_FILE transcript set (DNA nucleotide sequences) file in FASTA format
+OUTPUT_NAME name to use for the run and temporary files 
+LINEAGE location of the BUSCO lineage data to use
+
+Output data. Successful execution of the BUSCO assessment pipeline will
+create a directory named name_OUTPUT where ‘name’ is your assigned name for the assessment run.
+
+Plot the results
+To run the BUSCO_plot.py script, first create a folder, and copy the BUSCO short summary file from each of the runs you want to plot 
+into this folder.
+
+python BUSCO_plot.py -wd BUSCO_summaries
