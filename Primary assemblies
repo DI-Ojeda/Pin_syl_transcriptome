@@ -1,1 +1,10 @@
-Strategy A. Individual assemblies using each genotype and tissue type separately.Assemblies obtained with Trinity and CLCBio.
+Strategy A. Individual assemblies using each genotype and tissue type separately. 
+Assemblies obtained with
+
+Trinity: 
+Trinity --seqType fq --group_pairs_distance 1000 --max_memory 60G \
+--left Read_R1.fastq \
+--right Read_R2.fastq \
+--SS_lib_type RF --CPU 10 --output output_file
+
+CLCBio
