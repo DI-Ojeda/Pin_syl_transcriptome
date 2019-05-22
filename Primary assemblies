@@ -8,3 +8,44 @@ Trinity --seqType fq --group_pairs_distance 1000 --max_memory 60G \
 --SS_lib_type RF --CPU 10 --output output_file
 
 CLCBio
+
+
+Strategy B. All reads combined (tissue type and individual).
+1. Concatenate all reads from tissue types and genotypes (individuals)
+2. In silico read normalization of the reads concatenated
+
+insilico_read_normalization.pl --seqType <string> --JM <string> \
+--max_cov 50 \
+--left Read_R1.fastq \
+--right Read_R2.fastq \
+
+3. Assembly using Trinity and CLCBio as above.
+
+Strategy C. Guided assembly.
+1. Individual assembly of megagametophyte tissue (haploid) first for each genotype with Trinity
+retaining only ytranscripts > 500 bp in the assembly 
+
+Trinity:
+Trinity --seqType fq --group_pairs_distance 1000 --max_memory 60G \
+--left Read_R1.fastq \
+--right Read_R2.fastq \
+--SS_lib_type RF --CPU 10 --output output_file \
+--min_contig_length 500 \
+
+2. Concatenate all individual assemblies of megagametophyte into one single file that will be used as the long reads
+Mega_all_longreads.fast
+
+3. Assembly using Trinity and CLCBio using the long reads as a guide
+
+Trinity:
+Trinity --seqType fq --group_pairs_distance 1000 --no_normalize_reads --max_memory 250G \
+--left Read_R1.fastq.normalized.fq \
+--right /Read_R2.fastq.normalized.fq \
+--long_reads Mega_ALL_Longreads.fasta \
+--SS_lib_type RF --output output_file \
+
+
+
+
+
+
