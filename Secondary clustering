@@ -10,4 +10,19 @@
  https://onlinelibrary.wiley.com/doi/full/10.1111/pbi.12051
  
  
+ SuperTranscripts and CD-HIT clustering
  
+ 1. Once you obtained the assembly from the primary strategies (B, not guided or C, guided), redundancy is decreased 
+ by first clustering the transcripts into SuperTranscripts (representation of all isoforms by a single non-redundant contig)
+ using the Lace software version 1.00. 
+ 
+ ##Note
+ - Excluded short (≤ 300 bp) and low expressed (total effective count ≤ 10 read count) isoforms prior to running Lace to avoid the inclusion
+ of spurios isoforms.
+ - Identify SuperTranscripts that appeared to contain similar exonic sequences merged consecutively, as these kinds of “mosaics” could 
+ arise due to allelic variation and paralog sequence collapse (PSC). First, identify by self-blasting the SuperTranscripts. 
+ All SuperTranscripts that had blast hits within itself (other than the obvious 100% self-match) are potential mosaics, and should be excluded
+ The program to create the SuperTranscripts is here:
+ https://github.com/Oshlack/Lace
+ 
+ 2. CD-HIT clustering with sequence identity cut-off (-c) 0.95
