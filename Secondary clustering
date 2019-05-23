@@ -1,10 +1,13 @@
  Orthology Guided Assembly (OGA) approach
  
- 1. Concatenated all transcripts (contigs) obtained individually from strategy A.
+ 1. Concatenate all transcripts (contigs) obtained individually from strategy A.
  CLCBio tends to produce less transcripts than Trinity, thus for this particularly study we employed the contigs generated with CLCBio
  
  2. A set of proteomes from the same species or a closely related species.
  This set of preoteome will be used to identify transcripts present in the assemblies with homology on the data set reference used.
+ 
+ Details of the entire procedure is available here:
+ https://onlinelibrary.wiley.com/doi/full/10.1111/pbi.12051
  
  
  
