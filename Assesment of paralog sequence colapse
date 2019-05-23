@@ -1,0 +1,37 @@
+Assesment of paralog sequence collapse (PSC) in the assembled transcriptomes
+
+Once you have obtained an assembled transcriptome, these are the steps you can follow to determine redundancy due to PSC.
+1. Based on genotype, you need first to concatenate all reads from your diploid tissues and haplodid tissues. Then, you mapped the 
+different ploidy levels to your reference assembly with STAR aligner, like so:
+
+STAR aligner
+a. Index your assembly
+
+b. map the reads
+
+star aligner --read 1 --read2 --runThread 12 --twopassMode Basic --outFilterMultimapNMax 1 outFilterMistmatchNoverLmax 0.025
+
+2. Remove duplicates with SAMtools and assign read groups with the picard tool AddOrReplaceReadGroups. 
+
+3. Call monomorphic and polimorphic sites for each tissue ploidy level mapped with freebayes, like so:
+
+freebayes -regions regions.txt -f Assemly.fasta -u -T 0.005 -= -X --report-monomorphic --genotype-qualities 
+-p 2 -L List_embryo_bam_files > output_vcf
+
+##Note, if you have a large transcriptome assembly, you can first generate a regions.txt file of your assembly, and then run freebayes taking into
+consideration these regions (- regions option).
+
+4. Filter your vcf files with vcftools
+
+Minimum depth per sample set to 10, and maximum amount of missing data 0.5 per site. For polymorphic sites keep only bi-allelic SNP sites
+with a quality > 20. 
+
+5. Estimate number of heterozygous and homozygous variant calls
+
+a. Determine number of heterozygous and homozygous with vcftools using the --hardy option. 
+When comparing different assemblies determine per bp level nucleotide diversity per transcript within each assembly. 
+
+b. Estimate observed and expected heterozygosity (π) per nucleotide for each transcript individually. 
+Heterozygous calls from reads originating from haploid material is indicate of paralog mapping or sequencing/genotype 
+calling errors. Using these levels when comparing different assemblies, you can estimate the level of PSC among 
+your reference transcriptomes
